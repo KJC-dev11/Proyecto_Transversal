@@ -4,6 +4,9 @@
  */
 package protecto_transversal;
 
+import Modelo.Conexion;
+import java.sql.Connection;
+
 /**
  *
  * @author MOON
@@ -15,7 +18,8 @@ public class Protecto_Transversal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        prueba
+        
+        Connection con=Conexion.getConexion();
     }
     
 }
