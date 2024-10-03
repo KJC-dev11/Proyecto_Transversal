@@ -4,10 +4,21 @@
  */
 package Persistencia;
 
+import Modelo.Conexion;
+import java.sql.Connection;
+
 /**
  *
  * @author MOON
  */
 public class alumnoData {
     
+    private Connection con=null;
+    
+    public alumnoData(){
+        
+        con = Conexion.getConexion();
+    }
 }
+
+    public void guardarAlumno (Alumno alumno) {
