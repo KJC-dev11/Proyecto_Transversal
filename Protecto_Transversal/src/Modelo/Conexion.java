@@ -7,39 +7,32 @@ package Modelo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author MOON
  */
 public class Conexion {
-    private static final String URL="jdbc:mariadb://localhost/";
-    private static final String DB="gestion_alumnos";
-    private static final String USUARIO="root";
-    private static final String PASSWORD="";
-    private static Connection connection;
+    private static final String url ="jdbc:mysql://localhost:3306/gestion_alumnos";
+    private static final String usuario ="root";
+    private static final String password ="";
+    
+    private static Connection conexion;
     
     private Conexion(){
         
     }
     
-    public static Connection getConexion(){
-        
-        if (connection ==null){
+    public static Connection getConexion() {
+        if (conexion == null) {
             try {
-                Class.forName("org.mariadb.jdbc.Driver");
-                connection = DriverManager.getConnection(URL+DB,USUARIO,PASSWORD);
-                JOptionPane.showMessageDialog(null, "Conectado");
-            } catch (ClassNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, "Error al cargar los drivers.");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos");
+                conexion = DriverManager.getConnection(url, usuario, password);
+                System.out.println("Conexión exitosa");
+            } catch (SQLException e) {
+                System.out.println("Error en la conexión: " + e.getMessage());
             }
         }
-        return connection;
+        return conexion;
     }
-    
 }

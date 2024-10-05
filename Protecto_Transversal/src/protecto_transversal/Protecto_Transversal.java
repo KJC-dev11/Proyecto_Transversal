@@ -19,7 +19,8 @@ public class Protecto_Transversal {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        Connection con=Conexion.getConexion();
+        Connection con;
+        con = Conexion.getConexion();
     }
     
 }
