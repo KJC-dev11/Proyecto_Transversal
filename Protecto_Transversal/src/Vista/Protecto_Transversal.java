@@ -46,13 +46,13 @@ public class Protecto_Transversal {
             PreparedStatement ps1 = con.prepareStatement(sql1);
             PreparedStatement ps2 = con.prepareStatement(sql2);
             
+            ps.executeUpdate(sql);
+            ps1.executeUpdate(sql1);
+            ps2.executeUpdate(sql2);
+            
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error SQL"+e.getMessage());
         }
-        
-        
-            
-                
     }
     
 }
