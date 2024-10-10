@@ -29,7 +29,7 @@ public class alumnoData {
             ps.setInt(1, alumno.getDni());
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getNombre());
-            ps.setDate(4, new Date(alumno.getFechaNacimiento().getTime())); // Conversión de java.util.Date a java.sql.Date
+            ps.setDate(4, Date.valueOf(alumno.getFechaNacimiento())); // Conversión de java.util.Date a java.sql.Date
             ps.setBoolean(5, alumno.isEstado());
             ps.executeUpdate();
 
@@ -59,7 +59,7 @@ public class alumnoData {
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
-                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento"));
+                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setEstado(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No existe el alumno");
@@ -86,7 +86,7 @@ public class alumnoData {
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
-                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento"));
+                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setEstado(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No existe el alumno");
@@ -112,7 +112,7 @@ public class alumnoData {
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
-                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento"));
+                alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setEstado(rs.getBoolean("estado"));
                 alumnos.add(alumno);
             }
@@ -131,7 +131,7 @@ public class alumnoData {
             ps.setInt(1, alumno.getDni());
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getNombre());
-            ps.setDate(4, new Date(alumno.getFechaNacimiento().getTime()));
+            ps.setDate(4, Date.valueOf(alumno.getFechaNacimiento()));
             ps.setInt(5, alumno.getIdAlumno());
 
             int exito = ps.executeUpdate();
