@@ -328,43 +328,4 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jrbEstado.setSelected(false);
         jdcFechaNac.setDate(null);
     }
-    
-    private void guardarAlumno(){
-        
-        try {
-            Integer dni = Integer.parseInt(jtfDocumento.getText());
-            String apellido = jtfApellido.getText();
-            String nombre = jtfNombre.getText();
-            
-            if (apellido.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
-            }
-            
-            java.util.Date nFecha = jdcFechaNac.getDate();
-            LocalDate fechaNac = nFecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            
-            Boolean estado = jrbEstado.isSelected();
-            
-            alumnoActual = aluData.buscarAlumnoPorDni(dni);
-            
-            if (aluData==null) {
-                alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
-                aluData.guardarAlumno(alumnoActual);
-                
-            } else {
-                alumnoActual.setDni(dni);
-                alumnoActual.setApellido(apellido);
-                alumnoActual.setNombre(nombre);
-                alumnoActual.setFechaNacimiento(fechaNac);
-                alumnoActual.setEstado(estado);
-                
-                aluData.modificarAlumno(alumnoActual);
-                }
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
-        }
-        
-            
-    }
 }
