@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-    private alumnoData aluData = new alumnoData();
+    private final alumnoData aluData = new alumnoData();
     private Alumno alumnoActual = null;
     
     
@@ -263,7 +263,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         
         try {
             int dni = Integer.parseInt(jtfDocumento.getText());
-            alumnoActual = aluData.buscarAlumno(dni);
+            alumnoActual = aluData.buscarAlumnoPorDni(dni);
             
             if (alumnoActual!=null) {
                  jtfApellido.setText(alumnoActual.getApellido());
@@ -286,5 +286,17 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jtfNombre.setText("");
         jrbEstado.setSelected(false);
         jdcFechaNac.setDate(null);
+    }
+    
+    private void guardarAlumno(){
+        try {
+            int dni = Integer.parseInt(jtfDocumento.getText());
+            
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
+        }
+        
+            
     }
 }
