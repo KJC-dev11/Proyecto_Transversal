@@ -232,7 +232,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbSalirActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        
+        eliminarAlumno();        
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
@@ -245,38 +245,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-        try {
-            Integer dni = Integer.parseInt(jtfDocumento.getText());
-            String apellido = jtfApellido.getText();
-            String nombre = jtfNombre.getText();
-            
-            if (apellido.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
-            }
-            
-            java.util.Date nFecha = jdcFechaNac.getDate();
-            LocalDate fechaNac = new java.sql.Date(nFecha.getTime()).toLocalDate();
-            
-            Boolean estado = jrbEstado.isEnabled();
-            
-            if (alumnoActual==null) {
-                alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
-                aluData.guardarAlumno(alumnoActual);
-                
-            } else {
-                alumnoActual.setDni(dni);
-                alumnoActual.setApellido(apellido);
-                alumnoActual.setNombre(nombre);
-                alumnoActual.setFechaNacimiento(fechaNac);
-                alumnoActual.setEstado(estado);
-                
-                aluData.modificarAlumno(alumnoActual);
-                }
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
-        }
-        
+        guardarAlumno();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
 
@@ -327,5 +296,50 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jtfNombre.setText("");
         jrbEstado.setSelected(false);
         jdcFechaNac.setDate(null);
+    }
+    
+    private void guardarAlumno(){
+        try {
+                Integer dni = Integer.parseInt(jtfDocumento.getText());
+                String apellido = jtfApellido.getText();
+                String nombre = jtfNombre.getText();
+
+                if (apellido.isEmpty() || nombre.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
+                }
+
+                java.util.Date nFecha = jdcFechaNac.getDate();
+                LocalDate fechaNac = new java.sql.Date(nFecha.getTime()).toLocalDate();
+
+                Boolean estado = jrbEstado.isEnabled();
+
+                if (alumnoActual==null) {
+                    alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
+                    aluData.guardarAlumno(alumnoActual);
+
+                } else {
+                    alumnoActual.setDni(dni);
+                    alumnoActual.setApellido(apellido);
+                    alumnoActual.setNombre(nombre);
+                    alumnoActual.setFechaNacimiento(fechaNac);
+                    alumnoActual.setEstado(estado);
+
+                    aluData.modificarAlumno(alumnoActual);
+                    }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
+            }
+        }
+    
+    private void eliminarAlumno(){
+        if (alumnoActual!=null) {
+                aluData.eliminarAlumno(alumnoActual.getIdAlumno());
+                alumnoActual=null;
+                limpiarCampos();
+
+            } else{
+                JOptionPane.showMessageDialog(this, "No hay un alumno seleccionado");
+            }
     }
 }
