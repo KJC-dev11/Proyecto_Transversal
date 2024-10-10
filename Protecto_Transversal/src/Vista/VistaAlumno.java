@@ -5,15 +5,23 @@
  */
 package Vista;
 
+import Modelo.Alumno;
+import Persistencia.alumnoData;
+import java.sql.Date;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author FrancoPC
  */
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VistaMateria
-     */
+    private alumnoData aluData = new alumnoData();
+    private Alumno alumnoActual = null;
+    
+    
+    
     public VistaAlumno() {
         initComponents();
     }
@@ -37,12 +45,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jtfApellido = new javax.swing.JTextField();
         jtfNombre = new javax.swing.JTextField();
         jrbEstado = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        jbBuscar = new javax.swing.JButton();
         jbNuevo = new javax.swing.JToggleButton();
         jbEliminar = new javax.swing.JToggleButton();
         jbGuardar = new javax.swing.JToggleButton();
         jbSalir = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JSeparator();
+        jdcFechaNac = new com.toedter.calendar.JDateChooser();
 
         setBorder(null);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -80,8 +89,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
-        jButton1.setText("Buscar");
+        jbBuscar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        jbBuscar.setText("Buscar");
+        jbBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBuscarActionPerformed(evt);
+            }
+        });
 
         jbNuevo.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
         jbNuevo.setText("Nuevo");
@@ -120,24 +134,28 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(65, 65, 65)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2)))
+                                    .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jrbEstado)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jtfDocumento)
-                                            .addComponent(jtfApellido)
-                                            .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jdcFechaNac, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jtfDocumento, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtfApellido, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtfNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton1)
+                                        .addComponent(jbBuscar)
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
@@ -167,7 +185,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jtfDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jbBuscar))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -181,13 +199,18 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                     .addComponent(jrbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbNuevo)
-                    .addComponent(jbEliminar)
-                    .addComponent(jbGuardar)
-                    .addComponent(jbSalir))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jdcFechaNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbNuevo)
+                            .addComponent(jbEliminar)
+                            .addComponent(jbGuardar)
+                            .addComponent(jbSalir)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -207,15 +230,16 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        jtfDocumento.setText("");
-        jtfApellido.setText("");
-        jtfNombre.setText("");
-        jrbEstado.setSelected(false);
+        limpiarCampos();
+        alumnoActual=null;
     }//GEN-LAST:event_jbNuevoActionPerformed
+
+    private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
+       buscarAlumno();
+    }//GEN-LAST:event_jbBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -223,13 +247,44 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton jbBuscar;
     private javax.swing.JToggleButton jbEliminar;
     private javax.swing.JToggleButton jbGuardar;
     private javax.swing.JToggleButton jbNuevo;
     private javax.swing.JToggleButton jbSalir;
+    private com.toedter.calendar.JDateChooser jdcFechaNac;
     private javax.swing.JRadioButton jrbEstado;
     private javax.swing.JTextField jtfApellido;
     private javax.swing.JTextField jtfDocumento;
     private javax.swing.JTextField jtfNombre;
     // End of variables declaration//GEN-END:variables
+
+    private void buscarAlumno(){
+        
+        try {
+            int dni = Integer.parseInt(jtfDocumento.getText());
+            alumnoActual = aluData.buscarAlumno(dni);
+            
+            if (alumnoActual!=null) {
+                 jtfApellido.setText(alumnoActual.getApellido());
+                 jtfNombre.setText(alumnoActual.getNombre());
+                 jrbEstado.setSelected(alumnoActual.isEstado());
+                 
+                 LocalDate lc = alumnoActual.getFechaNacimiento();
+                 Date date = Date.valueOf(lc);
+                 jdcFechaNac.setDate(date);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
+        }  
+    }
+    
+    private void limpiarCampos(){
+        jtfDocumento.setText("");
+        jtfApellido.setText("");
+        jtfNombre.setText("");
+        jrbEstado.setSelected(false);
+        jdcFechaNac.setDate(null);
+    }
 }
