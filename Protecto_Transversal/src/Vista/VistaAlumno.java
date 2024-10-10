@@ -9,6 +9,7 @@ import Modelo.Alumno;
 import Persistencia.alumnoData;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import javax.swing.JOptionPane;
 
 /**
@@ -115,6 +116,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         jbGuardar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbSalir.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
         jbSalir.setText("Salir");
@@ -238,6 +244,41 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
        buscarAlumno();
     }//GEN-LAST:event_jbBuscarActionPerformed
 
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        try {
+            Integer dni = Integer.parseInt(jtfDocumento.getText());
+            String apellido = jtfApellido.getText();
+            String nombre = jtfNombre.getText();
+            
+            if (apellido.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
+            }
+            
+            java.util.Date nFecha = jdcFechaNac.getDate();
+            LocalDate fechaNac = new java.sql.Date(nFecha.getTime()).toLocalDate();
+            
+            Boolean estado = jrbEstado.isEnabled();
+            
+            if (alumnoActual==null) {
+                alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
+                aluData.guardarAlumno(alumnoActual);
+                
+            } else {
+                alumnoActual.setDni(dni);
+                alumnoActual.setApellido(apellido);
+                alumnoActual.setNombre(nombre);
+                alumnoActual.setFechaNacimiento(fechaNac);
+                alumnoActual.setEstado(estado);
+                
+                aluData.modificarAlumno(alumnoActual);
+                }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
+        }
+        
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -289,9 +330,36 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }
     
     private void guardarAlumno(){
+        
         try {
-            int dni = Integer.parseInt(jtfDocumento.getText());
+            Integer dni = Integer.parseInt(jtfDocumento.getText());
+            String apellido = jtfApellido.getText();
+            String nombre = jtfNombre.getText();
             
+            if (apellido.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
+            }
+            
+            java.util.Date nFecha = jdcFechaNac.getDate();
+            LocalDate fechaNac = nFecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            Boolean estado = jrbEstado.isSelected();
+            
+            alumnoActual = aluData.buscarAlumnoPorDni(dni);
+            
+            if (aluData==null) {
+                alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
+                aluData.guardarAlumno(alumnoActual);
+                
+            } else {
+                alumnoActual.setDni(dni);
+                alumnoActual.setApellido(apellido);
+                alumnoActual.setNombre(nombre);
+                alumnoActual.setFechaNacimiento(fechaNac);
+                alumnoActual.setEstado(estado);
+                
+                aluData.modificarAlumno(alumnoActual);
+                }
             
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
