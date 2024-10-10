@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,9 +28,9 @@ public class Protecto_Transversal {
         Connection con;
         con = Conexion.getConexion();
         
-        Alumno franco = new Alumno(43953801, "Aguero", "Franco", new Date(2001, 12, 18), true);
-        Alumno romeo = new Alumno(46408652, "Caruso", "Romeo", new Date(2005, 05, 27), true);        
-        Alumno kevin = new Alumno(43123698, "Jofre", "Kevin", new Date(2000, 11, 11), true);
+        Alumno franco = new Alumno(43953801, "Aguero", "Franco", LocalDate.of(2001, 12, 18), true);
+        Alumno romeo = new Alumno(46408652, "Caruso", "Romeo", LocalDate.of(2005, 05, 27), true);        
+        Alumno kevin = new Alumno(43123698, "Jofre", "Kevin", LocalDate.of(2000, 11, 11), true);
         
         try {
             
@@ -54,5 +55,6 @@ public class Protecto_Transversal {
             JOptionPane.showMessageDialog(null, "Error SQL"+e.getMessage());
         }
     }
+    
     
 }
