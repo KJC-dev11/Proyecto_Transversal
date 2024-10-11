@@ -7,6 +7,9 @@ package Vista;
 
 import Modelo.Materia;
 import Persistencia.materiaData;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -227,27 +230,69 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         // TODO add your handling code here:
-         try {
-        int id = Integer.parseInt(jtfCodigo.getText());
-        materiaData md = new materiaData();
-        Materia materia = md.buscarMateria(id);
-
+            try {
+        int codigo = Integer.parseInt(jtfCodigo.getText());
+        materiaData mData = new materiaData();
+        Materia materia = mData.buscarMateria(codigo);
+        
         if (materia != null) {
             jtfNombre.setText(materia.getNombre());
             jtfAño.setText(String.valueOf(materia.getAñoMateria()));
             jrbEstado.setSelected(materia.isActivo());
+        } else {
+            JOptionPane.showMessageDialog(this, "Materia no encontrada");
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El código debe ser un número.");
+        JOptionPane.showMessageDialog(this, "Código inválido. Debe ser un número.");
     }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
+            try {
+        int codigo = Integer.parseInt(jtfCodigo.getText());
+        materiaData mData = new materiaData();
+        mData.eliminarMateria(codigo);
+
+        // limpiar los campos, despues vi que lo habias hecho en VistaAlumno pero lo dejo asi
+        jtfCodigo.setText("");
+        jtfNombre.setText("");
+        jtfAño.setText("");
+        jrbEstado.setSelected(false);
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "codigo invalido, debe ser un numero");
+    }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
+ materiaData mData = new materiaData();
+    
+    try {
+        String nombre = jtfNombre.getText();
+        int añoMateria = Integer.parseInt(jtfAño.getText());
+        boolean activo = jrbEstado.isSelected();
+        Materia materia = new Materia(nombre, añoMateria, activo);
+        if (jtfCodigo.getText().isEmpty()) {
+            mData.guardarMateria(materia);
+            
+            jtfCodigo.setText(String.valueOf(materia.getIdMateria()));
+            
+            JOptionPane.showMessageDialog(this, "Materia guardada correctamente.");
+        } else {
+            int codigo = Integer.parseInt(jtfCodigo.getText());
+            materia.setIdMateria(codigo);
+            mData.modificarMateria(materia);
+
+            JOptionPane.showMessageDialog(this, "Materia actualizada correctamente.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Año inválido. Debe ser un número.");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al interactuar con la base de datos.");
+        Logger.getLogger(VistaMateria.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jrbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbEstadoActionPerformed
