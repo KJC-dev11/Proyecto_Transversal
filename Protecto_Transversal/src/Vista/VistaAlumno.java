@@ -7,6 +7,7 @@ package Vista;
 
 import Modelo.Alumno;
 import Persistencia.alumnoData;
+import java.awt.HeadlessException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -299,37 +300,40 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }
     
     private void guardarAlumno(){
-        try {
-                Integer dni = Integer.parseInt(jtfDocumento.getText());
-                String apellido = jtfApellido.getText();
-                String nombre = jtfNombre.getText();
+    try {
+        if (jtfDocumento.getText().isEmpty() || jtfApellido.getText().isEmpty() || 
+            jtfNombre.getText().isEmpty() || jdcFechaNac.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacíos");
+            return;
+        }
+        
+        Integer dni = Integer.valueOf(jtfDocumento.getText());
+        String apellido = jtfApellido.getText();
+        String nombre = jtfNombre.getText();
+        
+        java.util.Date nFecha = jdcFechaNac.getDate();
+        LocalDate fechaNac = new java.sql.Date(nFecha.getTime()).toLocalDate();
+        
+        Boolean estado = jrbEstado.isSelected();
 
-                if (apellido.isEmpty() || nombre.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
-                }
-
-                java.util.Date nFecha = jdcFechaNac.getDate();
-                LocalDate fechaNac = new java.sql.Date(nFecha.getTime()).toLocalDate();
-
-                Boolean estado = jrbEstado.isEnabled();
-
-                if (alumnoActual==null) {
-                    alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
-                    aluData.guardarAlumno(alumnoActual);
-
-                } else {
-                    alumnoActual.setDni(dni);
-                    alumnoActual.setApellido(apellido);
-                    alumnoActual.setNombre(nombre);
-                    alumnoActual.setFechaNacimiento(fechaNac);
-                    alumnoActual.setEstado(estado);
-
-                    aluData.modificarAlumno(alumnoActual);
-                    }
-
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Debe ingresar un numero válido \n"+e.getLocalizedMessage());
-            }
+        if (alumnoActual == null) {
+            alumnoActual = new Alumno(dni, apellido, nombre, fechaNac, estado);
+            aluData.guardarAlumno(alumnoActual);
+            limpiarCampos();
+        } else {
+            alumnoActual.setDni(dni);
+            alumnoActual.setApellido(apellido);
+            alumnoActual.setNombre(nombre);
+            alumnoActual.setFechaNacimiento(fechaNac);
+            alumnoActual.setEstado(estado);
+            aluData.modificarAlumno(alumnoActual);
+        }
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un numero valido en el campo DNI.\n" + e.getLocalizedMessage());
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(this, "Ocurrio un error al guardar el alumno: " + e.getMessage());
+    }
         }
     
     private void eliminarAlumno(){

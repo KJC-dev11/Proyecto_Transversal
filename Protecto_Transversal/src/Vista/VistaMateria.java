@@ -21,8 +21,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     /**
      * Creates new form VistaAlumno
      */
+    private materiaData materiaData; 
+    
     public VistaMateria() {
         initComponents();
+         materiaData = new materiaData();
     }
 
     /**
@@ -222,76 +225,58 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbSalirActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        jtfCodigo.setText("");
-        jtfNombre.setText("");
-        jtfAño.setText("");
-        jrbEstado.setSelected(false);
+limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         // TODO add your handling code here:
             try {
-        int codigo = Integer.parseInt(jtfCodigo.getText());
-        materiaData mData = new materiaData();
-        Materia materia = mData.buscarMateria(codigo);
-        
+        int idMateria = Integer.parseInt(jtfCodigo.getText());
+        Materia materia = materiaData.buscarMateria(idMateria);
         if (materia != null) {
             jtfNombre.setText(materia.getNombre());
             jtfAño.setText(String.valueOf(materia.getAñoMateria()));
             jrbEstado.setSelected(materia.isActivo());
         } else {
             JOptionPane.showMessageDialog(this, "Materia no encontrada");
+            limpiarCampos();
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Código inválido. Debe ser un número.");
+        JOptionPane.showMessageDialog(this, "El código debe ser un número");
     }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
             try {
-        int codigo = Integer.parseInt(jtfCodigo.getText());
-        materiaData mData = new materiaData();
-        mData.eliminarMateria(codigo);
-
-        // limpiar los campos, despues vi que lo habias hecho en VistaAlumno pero lo dejo asi
-        jtfCodigo.setText("");
-        jtfNombre.setText("");
-        jtfAño.setText("");
-        jrbEstado.setSelected(false);
-
+        int idMateria = Integer.parseInt(jtfCodigo.getText());
+        materiaData.eliminarMateria(idMateria);
+        limpiarCampos();
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "codigo invalido, debe ser un numero");
+        JOptionPane.showMessageDialog(this, "El código debe ser un número");
     }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
- materiaData mData = new materiaData();
+          String nombre = jtfNombre.getText();
+    int año;
+    try {
+        año = Integer.parseInt(jtfAño.getText());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El año debe ser un número");
+        return;
+    }
+    
+    boolean estado = jrbEstado.isSelected();
+    Materia materia = new Materia(nombre, año, estado);
     
     try {
-        String nombre = jtfNombre.getText();
-        int añoMateria = Integer.parseInt(jtfAño.getText());
-        boolean activo = jrbEstado.isSelected();
-        Materia materia = new Materia(nombre, añoMateria, activo);
-        if (jtfCodigo.getText().isEmpty()) {
-            mData.guardarMateria(materia);
-            
-            jtfCodigo.setText(String.valueOf(materia.getIdMateria()));
-            
-            JOptionPane.showMessageDialog(this, "Materia guardada correctamente.");
-        } else {
-            int codigo = Integer.parseInt(jtfCodigo.getText());
-            materia.setIdMateria(codigo);
-            mData.modificarMateria(materia);
-
-            JOptionPane.showMessageDialog(this, "Materia actualizada correctamente.");
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Año inválido. Debe ser un número.");
+        materiaData.guardarMateria(materia);
+        jtfCodigo.setText(String.valueOf(materia.getIdMateria()));
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al interactuar con la base de datos.");
         Logger.getLogger(VistaMateria.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(this, "Error al guardar la materia");
     }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
@@ -311,6 +296,13 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfCodigoActionPerformed
 
+    
+       private void limpiarCampos() {
+        jtfCodigo.setText("");
+        jtfNombre.setText("");
+        jtfAño.setText("");
+        jrbEstado.setSelected(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
