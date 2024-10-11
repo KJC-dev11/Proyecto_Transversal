@@ -50,27 +50,25 @@ public class materiaData {
     }
     
     public Materia buscarMateria(int id){
-        Materia materia = null;
-                String sql = "SELECT nombre from materia where idMateria = ? AND activo = 1";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
+    Materia materia = null;
+    String sql = "SELECT nombre, añoMateria, estado FROM materia WHERE idMateria = ? AND estado = 1";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 materia = new Materia();
                 materia.setIdMateria(id);
                 materia.setNombre(rs.getString("nombre"));
                 materia.setAñoMateria(rs.getInt("añoMateria"));
-                materia.setActivo(true);
+                materia.setActivo(rs.getBoolean("estado"));
             } else {
                 JOptionPane.showMessageDialog(null, "No existe la materia");
             }
-            ps.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Materia: " + ex.getMessage());
         }
-        return materia;
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Materia: " + ex.getMessage());
+    }
+    return materia;
     }
     
     public List<Materia> listarMaterias(){

@@ -5,6 +5,10 @@
  */
 package Vista;
 
+import Modelo.Materia;
+import Persistencia.materiaData;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author FrancoPC
@@ -47,6 +51,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
         jbBuscar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jbBuscar.setText("Buscar");
+        jbBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel6.setText("Materia");
@@ -64,10 +73,31 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jLabel9.setText("Estado:");
 
         jtfCodigo.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        jtfCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfCodigoActionPerformed(evt);
+            }
+        });
 
         jtfNombre.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        jtfNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfNombreActionPerformed(evt);
+            }
+        });
 
         jtfAño.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N
+        jtfAño.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfAñoActionPerformed(evt);
+            }
+        });
+
+        jrbEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbEstadoActionPerformed(evt);
+            }
+        });
 
         jbNuevo.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jbNuevo.setText("Nuevo");
@@ -79,9 +109,19 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
         jbEliminar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbGuardar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbSalir.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
         jbSalir.setText("Salir");
@@ -184,6 +224,47 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jtfAño.setText("");
         jrbEstado.setSelected(false);
     }//GEN-LAST:event_jbNuevoActionPerformed
+
+    private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
+        // TODO add your handling code here:
+         try {
+        int id = Integer.parseInt(jtfCodigo.getText());
+        materiaData md = new materiaData();
+        Materia materia = md.buscarMateria(id);
+
+        if (materia != null) {
+            jtfNombre.setText(materia.getNombre());
+            jtfAño.setText(String.valueOf(materia.getAñoMateria()));
+            jrbEstado.setSelected(materia.isActivo());
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El código debe ser un número.");
+    }
+    }//GEN-LAST:event_jbBuscarActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
+    private void jrbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jrbEstadoActionPerformed
+
+    private void jtfAñoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfAñoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfAñoActionPerformed
+
+    private void jtfNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfNombreActionPerformed
+
+    private void jtfCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfCodigoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
