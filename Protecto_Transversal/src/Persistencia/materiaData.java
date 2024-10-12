@@ -36,11 +36,8 @@ public class materiaData {
         ps.setInt(3, materia.getAñoMateria());
         ps.setBoolean(4, materia.isActivo());
         ps.executeUpdate();
-        
-        JOptionPane.showMessageDialog(null, "Materia guardada con éxito");
-        ps.close();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Materia: " + ex.getMessage());
+    } catch (SQLException e) {
+        throw new SQLException("Error al guardar la materia", e);
     }
     }
     
@@ -55,7 +52,7 @@ public class materiaData {
                     materia.setIdMateria(id);
                     materia.setNombre(rs.getString("nombre"));
                     materia.setAñoMateria(rs.getInt("añoMateria"));
-                    materia.setActivo(rs.getBoolean("estado"));
+                    materia.setActivo(rs.getBoolean("activo"));
                 } else {
                     JOptionPane.showMessageDialog(null, "No existe la materia");
                 }
@@ -78,7 +75,7 @@ public class materiaData {
                 materia.setIdMateria(rs.getInt("idMateria"));
                 materia.setNombre(rs.getString("nombre"));
                 materia.setAñoMateria(rs.getInt("añoMateria"));
-                materia.setActivo(rs.getBoolean("estado"));
+                materia.setActivo(rs.getBoolean("activo"));
                 materias.add(materia);
             }
             ps.close();

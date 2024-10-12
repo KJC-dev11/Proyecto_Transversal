@@ -242,7 +242,7 @@ limpiarCampos();
             limpiarCampos();
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El código debe ser un número");
+        JOptionPane.showMessageDialog(this, "El código debe ser un numero");
     }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
@@ -253,30 +253,44 @@ limpiarCampos();
         materiaData.eliminarMateria(idMateria);
         limpiarCampos();
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El código debe ser un número");
+        JOptionPane.showMessageDialog(this, "El código debe ser un numero");
     }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
-          String nombre = jtfNombre.getText();
+String nombre = jtfNombre.getText().trim();
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío");
+        return;
+    }
+
     int año;
     try {
-        año = Integer.parseInt(jtfAño.getText());
+        año = Integer.parseInt(jtfAño.getText().trim());
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El año debe ser un número");
+        JOptionPane.showMessageDialog(this, "El año debe ser un número válido");
         return;
     }
     
-    boolean estado = jrbEstado.isSelected();
-    Materia materia = new Materia(nombre, año, estado);
+    boolean activo = jrbEstado.isSelected();
+
+    int idMateria;
+    try {
+        idMateria = Integer.parseInt(jtfCodigo.getText().trim());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El código debe ser un número válido");
+        return;
+    }
     
+    Materia materia = new Materia(idMateria, nombre, año, activo);
+
     try {
         materiaData.guardarMateria(materia);
-        jtfCodigo.setText(String.valueOf(materia.getIdMateria()));
+        JOptionPane.showMessageDialog(this, "Materia guardada con éxito");
     } catch (SQLException ex) {
         Logger.getLogger(VistaMateria.class.getName()).log(Level.SEVERE, null, ex);
-        JOptionPane.showMessageDialog(this, "Error al guardar la materia");
+        JOptionPane.showMessageDialog(this, "Error al guardar la materia: " + ex.getMessage());
     }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
