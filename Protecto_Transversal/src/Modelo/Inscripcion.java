@@ -4,6 +4,8 @@
  */
 package Modelo;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author MOON
@@ -13,21 +15,24 @@ public class Inscripcion {
     private Alumno alumno;
     private Materia materia;
     private double nota;
+    private LocalDate fechaInscripcion;
 
-    public Inscripcion() {
-    }
-
-    public Inscripcion(int idInscripcion, Alumno alumno, Materia materia, double nota) {
+    public Inscripcion(int idInscripcion, Alumno alumno, Materia materia, double nota, LocalDate fechaInscripcion) {
         this.idInscripcion = idInscripcion;
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
+        this.fechaInscripcion = fechaInscripcion;
     }
 
-    public Inscripcion(Alumno alumno, Materia materia, double nota) {
+    public Inscripcion(Alumno alumno, Materia materia, double nota, LocalDate fechaInscripcion) {
         this.alumno = alumno;
         this.materia = materia;
         this.nota = nota;
+        this.fechaInscripcion = fechaInscripcion;
+    }
+
+    public Inscripcion() {
     }
 
     public int getIdInscripcion() {
@@ -62,11 +67,20 @@ public class Inscripcion {
         this.nota = nota;
     }
 
+    public LocalDate getFechaInscripcion() {
+        return fechaInscripcion;
+    }
+
+    public void setFechaInscripcion(LocalDate fechaInscripcion) {
+        this.fechaInscripcion = fechaInscripcion;
+    }
+
     @Override
     public String toString() {
-        return "Inscripcion{" + "idInscripcion=" + idInscripcion + ", alumno=" + alumno + ", materia=" + materia + ", nota=" + nota + '}';
+        return "Inscripcion{" + "idInscripcion=" + idInscripcion + ", alumno=" + alumno + ", materia=" + materia + ", nota=" + nota + ", fechaInscripcion=" + fechaInscripcion + '}';
     }
     
     
+
     
 }
