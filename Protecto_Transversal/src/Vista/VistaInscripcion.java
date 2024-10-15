@@ -59,7 +59,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jrbMateriasInscriptas = new javax.swing.JRadioButton();
         jrbMateriasNOInscriptas = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtMaterias = new javax.swing.JTable();
         jInscribir = new javax.swing.JButton();
         jAnularInscripcion = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -92,7 +92,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -103,7 +103,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                 "ID", "NOMBRE", "AÑO"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtMaterias);
 
         jInscribir.setText("Inscribir");
         jInscribir.setEnabled(false);
@@ -225,6 +225,10 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private void jInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscribirActionPerformed
         // TODO add your handling code here:
         int filaSeleccionada = jtMaterias.getSelectedRow();
+        if(filaSeleccionada!=1){
+            Alumno a = (Alumno)cboxAlumno.getSelectedItem();
+            
+        }
     }//GEN-LAST:event_jInscribirActionPerformed
 
     private void jAnularInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnularInscripcionActionPerformed
@@ -247,9 +251,9 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JRadioButton jrbMateriasInscriptas;
     private javax.swing.JRadioButton jrbMateriasNOInscriptas;
+    private javax.swing.JTable jtMaterias;
     // End of variables declaration//GEN-END:variables
 
     private void cargarAlumnos() {
@@ -266,7 +270,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         for (Object it: filaCabecera){
             modelo.addColumn(it);
         }
-        jTable1.setModel(modelo);
+        jtMaterias.setModel(modelo);
     }
 
     

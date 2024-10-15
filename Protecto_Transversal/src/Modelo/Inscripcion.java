@@ -35,6 +35,11 @@ public class Inscripcion {
     public Inscripcion() {
     }
 
+    public Inscripcion(double nota) {
+        this.nota = nota;
+    }
+    
+
     public int getIdInscripcion() {
         return idInscripcion;
     }
