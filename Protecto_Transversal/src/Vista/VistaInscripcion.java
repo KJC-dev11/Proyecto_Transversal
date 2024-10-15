@@ -214,6 +214,8 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         borrarFilaTabla();
         jrbMateriasInscriptas.setSelected(false);  
         cargaDatosNoInscriptas();
+        jAnularInscripcion.setSelected(false);
+        jInscribir.setEnabled(true);
     }//GEN-LAST:event_jrbMateriasNOInscriptasActionPerformed
 
     private void cboxAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxAlumnoActionPerformed
@@ -222,6 +224,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
     private void jInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscribirActionPerformed
         // TODO add your handling code here:
+        int filaSeleccionada = jtMaterias.getSelectedRow();
     }//GEN-LAST:event_jInscribirActionPerformed
 
     private void jAnularInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnularInscripcionActionPerformed
@@ -235,7 +238,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cboxAlumno;
+    private javax.swing.JComboBox<Alumno> cboxAlumno;
     private javax.swing.JButton jAnularInscripcion;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jInscribir;
