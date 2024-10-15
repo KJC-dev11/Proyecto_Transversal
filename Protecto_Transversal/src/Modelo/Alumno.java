@@ -89,9 +89,8 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return apellido + nombre + fechaNacimiento;
+        return "Alumno: " + apellido + " " + nombre + ", Fecha de Nacimiento: " + fechaNacimiento;
     }
-    
     
     
 }

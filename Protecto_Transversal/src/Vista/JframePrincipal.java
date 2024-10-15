@@ -26,6 +26,7 @@ public class JframePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -33,8 +34,12 @@ public class JframePrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        jRadioButtonMenuItemInscripcion = new javax.swing.JRadioButtonMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
+
+        jRadioButtonMenuItem1.setSelected(true);
+        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -90,6 +95,16 @@ public class JframePrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu5.setText("Administración");
+
+        jRadioButtonMenuItemInscripcion.setSelected(true);
+        jRadioButtonMenuItemInscripcion.setText("Inscripcion");
+        jRadioButtonMenuItemInscripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemInscripcionActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jRadioButtonMenuItemInscripcion);
+
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Consulta");
@@ -159,6 +174,19 @@ public class JframePrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu1MouseClicked
 
+    private void jRadioButtonMenuItemInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemInscripcionActionPerformed
+        // TODO add your handling code here:
+                escritorio.removeAll();
+        escritorio.repaint();
+        
+        VistaInscripcion vistI = new VistaInscripcion();
+        
+        vistI.setVisible(true);
+        
+        escritorio.add(vistI);
+        escritorio.moveToFront(vistI);
+    }//GEN-LAST:event_jRadioButtonMenuItemInscripcionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -205,5 +233,7 @@ public class JframePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemInscripcion;
     // End of variables declaration//GEN-END:variables
 }
