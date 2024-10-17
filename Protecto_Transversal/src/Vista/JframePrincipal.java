@@ -36,6 +36,8 @@ public class JframePrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jRadioButtonMenuItemInscripcion = new javax.swing.JRadioButtonMenuItem();
         jMenu6 = new javax.swing.JMenu();
+        jRBM_CargarNotas = new javax.swing.JRadioButtonMenuItem();
+        jRBM_ListarInscripciones = new javax.swing.JRadioButtonMenuItem();
         jMenu7 = new javax.swing.JMenu();
 
         jRadioButtonMenuItem1.setSelected(true);
@@ -108,6 +110,25 @@ public class JframePrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Consulta");
+
+        jRBM_CargarNotas.setSelected(true);
+        jRBM_CargarNotas.setText("Notas");
+        jRBM_CargarNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRBM_CargarNotasActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jRBM_CargarNotas);
+
+        jRBM_ListarInscripciones.setSelected(true);
+        jRBM_ListarInscripciones.setText("Inscripciones");
+        jRBM_ListarInscripciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRBM_ListarInscripcionesActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jRBM_ListarInscripciones);
+
         jMenuBar1.add(jMenu6);
 
         jMenu7.setText("Salir");
@@ -187,6 +208,32 @@ public class JframePrincipal extends javax.swing.JFrame {
         escritorio.moveToFront(vistI);
     }//GEN-LAST:event_jRadioButtonMenuItemInscripcionActionPerformed
 
+    private void jRBM_CargarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBM_CargarNotasActionPerformed
+        // TODO add your handling code here:
+                        escritorio.removeAll();
+        escritorio.repaint();
+        
+        VistaCargarNotas vistCN = new VistaCargarNotas();
+        
+        vistCN.setVisible(true);
+        
+        escritorio.add(vistCN);
+        escritorio.moveToFront(vistCN);
+    }//GEN-LAST:event_jRBM_CargarNotasActionPerformed
+
+    private void jRBM_ListarInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBM_ListarInscripcionesActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        
+        VistaListarInscripciones vistLI = new VistaListarInscripciones();
+        
+        vistLI.setVisible(true);
+        
+        escritorio.add(vistLI);
+        escritorio.moveToFront(vistLI);
+    }//GEN-LAST:event_jRBM_ListarInscripcionesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -233,6 +280,8 @@ public class JframePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JRadioButtonMenuItem jRBM_CargarNotas;
+    private javax.swing.JRadioButtonMenuItem jRBM_ListarInscripciones;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemInscripcion;
     // End of variables declaration//GEN-END:variables
