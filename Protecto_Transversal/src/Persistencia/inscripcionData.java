@@ -129,6 +129,30 @@ public class inscripcionData {
             JOptionPane.showMessageDialog(null, "Error al actualizar la nota: " + e.getMessage());
         }
     }
+    
+    public List<Double> obtenerNotas(int idAlumno){
+        List<Double> notas = new ArrayList<>();
+        
+        String sql = "SELECT nota FROM inscripcion WHERE id_alumno = ?";
+        
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idAlumno);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    double nota = rs.getDouble("nota");
+                    notas.add(nota);
+                }
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener notas: " + ex.getMessage());
+        }
+        
+        return notas;
+    }
 
     public List<Alumno> obtenerAlumnosXMateria(int idMateria) {
         List<Alumno> alumnos = new ArrayList<>();
