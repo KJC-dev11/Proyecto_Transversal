@@ -23,7 +23,7 @@ public class VistaCargarNotas extends javax.swing.JInternalFrame {
     
     private alumnoData ad;
     private inscripcionData inscrData;
-    private ArrayList<Alumno> listaB;
+    private ArrayList<Alumno> listaAlumnos;
     private ArrayList<Materia> listaMaterias;
     private materiaData matData;
     private DefaultTableModel modelo;
@@ -37,7 +37,7 @@ public class VistaCargarNotas extends javax.swing.JInternalFrame {
         ad = new alumnoData();
         inscrData = new inscripcionData();
         matData = new materiaData();
-        listaB = (ArrayList<Alumno>) ad.listarAlumnos();
+        listaAlumnos = (ArrayList<Alumno>) ad.listarAlumnos();
         listaMaterias = (ArrayList<Materia>) matData.listarMaterias();
         modelo = new DefaultTableModel();
         cargarAlumnos();
@@ -180,23 +180,9 @@ public class VistaCargarNotas extends javax.swing.JInternalFrame {
 
 
      private void cargarAlumnos() {
- Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
-
-        if (alumnoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione un alumno");
-            return;
-        }
-
-        List<Materia> materias = inscrData.obtenerMateriasCursadas(alumnoSeleccionado.getIdAlumno());
-        List<Double> notas = inscrData.obtenerNotas(alumnoSeleccionado.getIdAlumno());
-
-        DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-        model.setRowCount(0);
-
-        for (int i = 0; i < materias.size(); i++) {
-            Materia materia = materias.get(i);
-            Double nota = notas.get(i);
-            model.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), nota});
+        cboxAlumnos.removeAllItems();
+        for (Alumno alumno : listaAlumnos) {
+            cboxAlumnos.addItem(alumno);
         }
     }
 
@@ -204,7 +190,7 @@ private void cargarMateriasCursadas() {
         Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
 
         if (alumnoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione un alumno");
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un alumno.");
             return;
         }
 
@@ -214,7 +200,11 @@ private void cargarMateriasCursadas() {
         DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
         model.setRowCount(0);
 
-        for (int i = 0; i < materias.size(); i++) {
+ if (materias.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El alumno no está inscripto en ninguna materia.");
+            return;
+        }
+  for (int i = 0; i < materias.size(); i++) {
             Materia materia = materias.get(i);
             Double nota = notas.get(i);
             model.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), nota});
@@ -222,31 +212,30 @@ private void cargarMateriasCursadas() {
     }
 
   private void guardarNotas() {
-  Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
-        
+         Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
+
         if (alumnoSeleccionado == null) {
-            JOptionPane.showMessageDialog(this, "Seleccione un alumno");
+            JOptionPane.showMessageDialog(this, "Seleccione un alumno.");
             return;
         }
 
         DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-        for (int i = 0; i < model.getRowCount(); i++) {
+  for (int i = 0; i < model.getRowCount(); i++) {
             int idMateria = (int) model.getValueAt(i, 0);
             double nota;
+
             try {
-                nota = Double.parseDouble(model.getValueAt(i, 2).toString());
+                nota = Double.parseDouble(model.getValueAt(i, 2).toString()); // Convierte la nota a double
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese una nota válida.");
+                JOptionPane.showMessageDialog(this, "Por favor, ingrese una nota válida en la fila " + (i + 1));
                 return;
             }
 
-            inscrData.actualizarNota(alumnoSeleccionado.getIdAlumno(), idMateria, nota);
+               inscrData.actualizarNota(alumnoSeleccionado.getIdAlumno(), idMateria, nota);
         }
 
         JOptionPane.showMessageDialog(this, "Notas actualizadas con éxito.");
     }
-
-
     }
 
 
