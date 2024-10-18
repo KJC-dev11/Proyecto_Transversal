@@ -133,7 +133,7 @@ public class inscripcionData {
     public List<Double> obtenerNotas(int idAlumno){
         List<Double> notas = new ArrayList<>();
         
-        String sql = "SELECT nota FROM inscripcion WHERE id_alumno = ?";
+        String sql = "SELECT nota FROM inscripcion WHERE idAlumno = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
