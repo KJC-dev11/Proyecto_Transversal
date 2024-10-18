@@ -34,14 +34,22 @@ public class VistaCargarNotas extends javax.swing.JInternalFrame {
      * Creates new form VistaCargarNotas
      */
     public VistaCargarNotas() {
-        initComponents();
+ initComponents();
         ad = new alumnoData();
         inscrData = new inscripcionData();
         matData = new materiaData();
         listaAlumnos = (ArrayList<Alumno>) ad.listarAlumnos();
         listaMaterias = (ArrayList<Materia>) matData.listarMaterias();
         modelo = new DefaultTableModel();
+        armarCabeceraTabla();
         cargarAlumnos();
+        
+        if (listaAlumnos.isEmpty()) {
+            cboxAlumnos.setEnabled(false);
+            tableMaterias.setEnabled(false);
+            jguardar.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "No hay alumnos disponibles.");
+        }
     }
     
 
@@ -185,63 +193,80 @@ public class VistaCargarNotas extends javax.swing.JInternalFrame {
         for (Alumno alumno : listaAlumnos) {
             cboxAlumnos.addItem(alumno);
         }
+        if (cboxAlumnos.getItemCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay alumnos disponibles.");
+        }
     }
 
 private void cargarMateriasCursadas() {
-        Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
+    Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
 
         if (alumnoSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione un alumno.");
             return;
         }
 
-        List<Materia> materias = inscrData.obtenerMateriasCursadas(alumnoSeleccionado.getIdAlumno());
-        List<Inscripcion> inscripcion = inscrData.obtenerInscripciones();
+        List<Inscripcion> inscripciones = inscrData.obtenerInscripciones(alumnoSeleccionado.getIdAlumno());
 
-        DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-        model.setRowCount(0);
+        modelo.setRowCount(0);
 
-        if (materias.isEmpty()) {
+        if (inscripciones.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El alumno no está inscripto en ninguna materia.");
             return;
         }
-        
-        for (Inscripcion inscripcion1 : inscripcion) {
-            if (inscripcion1.getAlumno().getNombre().equalsIgnoreCase(alumnoSeleccionado.getNombre())) {
-                model.addRow(new Object[]{inscripcion1.getIdInscripcion(), inscripcion1.getMateria(), inscripcion1.getNota()});
-            }
-            
-    }
+
+        for (Inscripcion inscripcion : inscripciones) {
+            modelo.addRow(new Object[]{inscripcion.getIdInscripcion(), inscripcion.getMateria().getNombre(), inscripcion.getNota()});
+        }
 }
 
   private void guardarNotas() {
-        Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
+           Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
 
         if (alumnoSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un alumno.");
             return;
         }
 
-        DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-        model.setRowCount(0);
-            for (int i = 0; i > model.getRowCount(); i++) {
-            int idMateria = (int) model.getValueAt(i, 1);
-            double nota;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+    int idInscripcion = (int) modelo.getValueAt(i, 0); 
+    double nota;
 
-            try {
-                nota = Double.parseDouble(model.getValueAt(i, 2).toString()); // Convierte la nota a double
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese una nota válida en la fila " + (i + 1));
-                return;
-            }
-
-               inscrData.actualizarNota(alumnoSeleccionado.getIdAlumno(), idMateria, nota);
+    try {
+        String notaStr = modelo.getValueAt(i, 2).toString();
+        if (notaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La nota de la fila " + (i + 1) + " está vacía.");
+            return;
         }
 
-        JOptionPane.showMessageDialog(this, "Notas actualizadas con éxito.");
+        nota = Double.parseDouble(notaStr);
+        if (nota < 0 || nota > 10) {
+            JOptionPane.showMessageDialog(this, "La nota debe estar entre 0 y 10.");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error en el formato de la nota en la fila " + (i + 1));
+        return;
+    }
+
+    inscrData.actualizarNota(idInscripcion, nota);
+}
+
+JOptionPane.showMessageDialog(this, "Notas guardadas exitosamente.");
+    }
+
+    private void armarCabeceraTabla() {
+        ArrayList<Object> columnas = new ArrayList<>();
+        columnas.add("ID Inscripción");
+        columnas.add("Materia");
+        columnas.add("Nota");
+        for (Object columna : columnas) {
+            modelo.addColumn(columna);
+        }
+        tableMaterias.setModel(modelo);
+    }
     }
   
 
-    }
 
 

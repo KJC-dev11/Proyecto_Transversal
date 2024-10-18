@@ -133,7 +133,7 @@ public class JframePrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu6);
 
-        jMenu7.setText("Salir");
+        jMenu7.setText("G15");
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);

@@ -43,11 +43,12 @@ public class inscripcionData {
         }
     }
 
-    public List<Inscripcion> obtenerInscripciones() {
-  List<Inscripcion> inscripciones = new ArrayList<>();
-        String sql = "SELECT * FROM inscripcion";
-        try (PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+public List<Inscripcion> obtenerInscripciones(int idAlumno) {
+    List<Inscripcion> inscripciones = new ArrayList<>();
+    String sql = "SELECT * FROM inscripcion WHERE idAlumno = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idAlumno);
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Inscripcion insc = new Inscripcion();
                 insc.setIdInscripcion(rs.getInt("idInscripcion"));
@@ -57,14 +58,15 @@ public class inscripcionData {
                 insc.setNota(rs.getDouble("nota"));
                 inscripciones.add(insc);
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al obtener inscripciones: " + e.getMessage());
         }
-        return inscripciones;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al obtener inscripciones: " + e.getMessage());
     }
+    return inscripciones;
+}
 
     public List<Materia> obtenerMateriasCursadas(int idAlumno) {
-        List<Materia> materias = new ArrayList<>();
+         List<Materia> materias = new ArrayList<>();
         String sql = "SELECT m.* FROM materia m JOIN inscripcion i ON m.idMateria = i.idMateria WHERE i.idAlumno = ? AND i.nota IS NOT NULL";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idAlumno);
@@ -81,7 +83,7 @@ public class inscripcionData {
     }
 
     public List<Materia> obtenerMateriasNOCursadas(int idAlumno) {
-        List<Materia> materias = new ArrayList<>();
+         List<Materia> materias = new ArrayList<>();
         String sql = "SELECT * FROM materia WHERE idMateria NOT IN (SELECT idMateria FROM inscripcion WHERE idAlumno = ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idAlumno);
@@ -113,31 +115,29 @@ public class inscripcionData {
         }
     }
 
-    public void actualizarNota(int idAlumno, int idMateria, double nota) {
-        String sql = "UPDATE inscripcion SET nota = ? WHERE idAlumno = ? AND idMateria = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setDouble(1, nota);
-            ps.setInt(2, idAlumno);
-            ps.setInt(3, idMateria);
-            int filas = ps.executeUpdate();
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(null, "Nota actualizada correctamente");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontró la inscripción a actualizar");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar la nota: " + e.getMessage());
+public void actualizarNota(int idInscripcion, double nota) {
+    String sql = "UPDATE inscripcion SET nota = ? WHERE idInscripcion = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setDouble(1, nota);
+        ps.setInt(2, idInscripcion);
+        int filas = ps.executeUpdate();
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(null, "Nota actualizada correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró la inscripción a actualizar");
         }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar la nota: " + e.getMessage());
     }
+}
     
     public List<Double> obtenerNotas(int idAlumno){
         List<Double> notas = new ArrayList<>();
-        
+
         String sql = "SELECT nota FROM inscripcion WHERE idAlumno = ?";
         
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            
             ps.setInt(1, idAlumno);
             
             try (ResultSet rs = ps.executeQuery()) {
@@ -146,16 +146,15 @@ public class inscripcionData {
                     notas.add(nota);
                 }
             }
-            
         } catch (SQLException ex) {
             System.out.println("Error al obtener notas: " + ex.getMessage());
         }
-        
+
         return notas;
     }
 
     public List<Alumno> obtenerAlumnosXMateria(int idMateria) {
-        List<Alumno> alumnos = new ArrayList<>();
+               List<Alumno> alumnos = new ArrayList<>();
         String sql = "SELECT a.* FROM alumno a JOIN inscripcion i ON a.idAlumno = i.idAlumno WHERE i.idMateria = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idMateria);
@@ -170,4 +169,6 @@ public class inscripcionData {
         }
         return alumnos;
     }
+     
 }
+
