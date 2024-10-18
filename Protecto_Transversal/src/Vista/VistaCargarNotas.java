@@ -223,8 +223,9 @@ private void cargarMateriasCursadas() {
         }
 
         DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-            for (int i = 0; i < model.getRowCount(); i++) {
-            int idMateria = (int) model.getValueAt(i, 0);
+        model.setRowCount(0);
+            for (int i = 0; i > model.getRowCount(); i++) {
+            int idMateria = (int) model.getValueAt(i, 1);
             double nota;
 
             try {
