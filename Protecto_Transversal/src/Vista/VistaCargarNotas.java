@@ -6,6 +6,7 @@
 package Vista;
 
 import Modelo.Alumno;
+import Modelo.Inscripcion;
 import Modelo.Materia;
 import Persistencia.alumnoData;
 import Persistencia.inscripcionData;
@@ -195,24 +196,26 @@ private void cargarMateriasCursadas() {
         }
 
         List<Materia> materias = inscrData.obtenerMateriasCursadas(alumnoSeleccionado.getIdAlumno());
-        List<Double> notas = inscrData.obtenerNotas(alumnoSeleccionado.getIdAlumno());
+        List<Inscripcion> inscripcion = inscrData.obtenerInscripciones();
 
         DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
         model.setRowCount(0);
 
- if (materias.isEmpty()) {
+        if (materias.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El alumno no está inscripto en ninguna materia.");
             return;
         }
-  for (int i = 0; i < materias.size(); i++) {
-            Materia materia = materias.get(i);
-            Double nota = notas.get(i);
-            model.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), nota});
-        }
+        
+        for (Inscripcion inscripcion1 : inscripcion) {
+            if (inscripcion1.getAlumno().getNombre().equalsIgnoreCase(alumnoSeleccionado.getNombre())) {
+                model.addRow(new Object[]{inscripcion1.getIdInscripcion(), inscripcion1.getMateria(), inscripcion1.getNota()});
+            }
+            
     }
+}
 
   private void guardarNotas() {
-         Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
+        Alumno alumnoSeleccionado = (Alumno) cboxAlumnos.getSelectedItem();
 
         if (alumnoSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un alumno.");
@@ -220,7 +223,7 @@ private void cargarMateriasCursadas() {
         }
 
         DefaultTableModel model = (DefaultTableModel) tableMaterias.getModel();
-  for (int i = 0; i < model.getRowCount(); i++) {
+            for (int i = 0; i < model.getRowCount(); i++) {
             int idMateria = (int) model.getValueAt(i, 0);
             double nota;
 
@@ -236,6 +239,8 @@ private void cargarMateriasCursadas() {
 
         JOptionPane.showMessageDialog(this, "Notas actualizadas con éxito.");
     }
+  
+
     }
 
 
