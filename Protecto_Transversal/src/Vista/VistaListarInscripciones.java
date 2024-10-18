@@ -124,7 +124,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         modelo.setRowCount(0);
          Materia materiaSeleccionada = (Materia) jcbMateria.getSelectedItem();
-        List <Alumno> listaAlumnos = inscData.obtenerAlumnosXMateria(materiaSeleccionada.getIdMateria());
+            List <Alumno> listaAlumnos = inscData.obtenerAlumnosXMateria(materiaSeleccionada.getIdMateria());
          for (Alumno alumno : listaAlumnos) {
             modelo.addRow(new Object[]{alumno.getIdAlumno(), alumno.getDni(), alumno.getApellido(), alumno.getNombre()});
         }
